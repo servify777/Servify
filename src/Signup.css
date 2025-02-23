@@ -1,0 +1,6 @@
+.image-body{
+    background-image: url('bg.png');
+    background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
