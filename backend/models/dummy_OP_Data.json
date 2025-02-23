@@ -1,0 +1,113 @@
+[
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "Web Development Project",
+      "description": "Build a responsive e-commerce website.",
+      "budget": 5000,
+      "technical_aspects": ["React", "Node.js", "MongoDB"],
+      "lowestBid": 4500,
+      "bids": [
+        { "userEmail": "user1@example.com", "amount": 4600, "timestamp": "2025-02-23T10:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "Mobile App Development",
+      "description": "Create a cross-platform mobile application.",
+      "budget": 7000,
+      "technical_aspects": ["Flutter", "Firebase"],
+      "lowestBid": 6500,
+      "bids": [
+        { "userEmail": "user2@example.com", "amount": 6800, "timestamp": "2025-02-23T11:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "Machine Learning Model",
+      "description": "Develop a recommendation system.",
+      "budget": 10000,
+      "technical_aspects": ["Python", "TensorFlow", "Scikit-Learn"],
+      "lowestBid": 9200,
+      "bids": [
+        { "userEmail": "user3@example.com", "amount": 9500, "timestamp": "2025-02-23T12:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "Blockchain Smart Contract",
+      "description": "Implement a secure Ethereum smart contract.",
+      "budget": 8000,
+      "technical_aspects": ["Solidity", "Ethereum", "Web3.js"],
+      "lowestBid": 7500,
+      "bids": [
+        { "userEmail": "user4@example.com", "amount": 7700, "timestamp": "2025-02-23T13:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "Data Analysis Dashboard",
+      "description": "Create an interactive data visualization tool.",
+      "budget": 6000,
+      "technical_aspects": ["D3.js", "Python", "PostgreSQL"],
+      "lowestBid": 5700,
+      "bids": [
+        { "userEmail": "user5@example.com", "amount": 5800, "timestamp": "2025-02-23T14:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "AI Chatbot",
+      "description": "Develop an AI chatbot for customer support.",
+      "budget": 9000,
+      "technical_aspects": ["NLP", "Dialogflow", "Python"],
+      "lowestBid": 8700,
+      "bids": [
+        { "userEmail": "user6@example.com", "amount": 8800, "timestamp": "2025-02-23T15:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "IoT Smart Home",
+      "description": "Build a smart home automation system.",
+      "budget": 12000,
+      "technical_aspects": ["Raspberry Pi", "Arduino", "MQTT"],
+      "lowestBid": 11000,
+      "bids": [
+        { "userEmail": "user7@example.com", "amount": 11500, "timestamp": "2025-02-23T16:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "Cybersecurity Audit",
+      "description": "Perform a security assessment for a web platform.",
+      "budget": 5000,
+      "technical_aspects": ["Ethical Hacking", "Penetration Testing"],
+      "lowestBid": 4800,
+      "bids": [
+        { "userEmail": "user8@example.com", "amount": 4900, "timestamp": "2025-02-23T17:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "Game Development",
+      "description": "Create an immersive 3D game.",
+      "budget": 15000,
+      "technical_aspects": ["Unity", "C#", "Blender"],
+      "lowestBid": 14000,
+      "bids": [
+        { "userEmail": "user9@example.com", "amount": 14500, "timestamp": "2025-02-23T18:00:00Z" }
+      ]
+    },
+    {
+      "url": "https://th.bing.com/th?id=OIP.ScdyGVxt-5MfP5vwwFkA8gAAAA&w=306&h=204&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
+      "title": "E-learning Platform",
+      "description": "Develop an online learning platform.",
+      "budget": 13000,
+      "technical_aspects": ["MERN Stack", "WebRTC"],
+      "lowestBid": 12500,
+      "bids": [
+        { "userEmail": "user10@example.com", "amount": 12700, "timestamp": "2025-02-23T19:00:00Z" }
+      ]
+    }
+  ]
+  
