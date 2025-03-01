@@ -71,7 +71,7 @@ const Auction = () => {
     <div>
       <h2 className="text-xl font-semibold" key={index}>{Data.title}</h2>
       <p className="text-gray-600" key={index}>{Data.client}</p>
-      <h4 className="text-gray-700 mt-2" key={index}>
+      <h4 className="text-gray-700 mt-2 min-w-80 w-80" key={index}>
         Description: {Data.description}
       </h4>
       <hr />

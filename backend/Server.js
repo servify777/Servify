@@ -12,12 +12,17 @@ import { Server } from "socket.io";
 import http from "http";
 import bidRoutes from './Routes/bidRoutes.js';
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 const completedAuctionsFile = "./completedAuctions.json";
 const projectprofiles = "./project-profile";
 const bidTimers = {}; // Track timers per auction
+
+
+
+
 
 
 if(!fs.existsSync(completedAuctionsFile)){

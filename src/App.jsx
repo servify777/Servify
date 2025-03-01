@@ -14,6 +14,7 @@ import Auction from './Auction';
 import Search from './Search';
 import AddProject from './AddProject';
 import './static/input.css';
+import YourProjects from './YourProjects';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
           <Route path='/auctions' element={<><Offer /><Navbar /><Auction /><About /></>} />
           <Route path='/search/:searchterm' element={<><Offer /><Navbar /><Search /><About /></>} />
           <Route path='/add' element={<><Offer /> <Navbar /> <AddProject /> <About /></>} />
+          <Route path='/projects' element={<><Offer /> <Navbar /> <YourProjects /> <About /></> } />
         </Routes>
       </Router>
     </>

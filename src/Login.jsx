@@ -69,6 +69,22 @@ const Login = () => {
         
     }
 
+    const handleForgotPassword = async ()=>{
+      try {
+        const response = await fetch('http://localhost:5000/users/forgot',{
+          headers:{'Content-Type':'application/json'},
+          method:'POST',
+          body:JSON.stringify(email)
+        });
+
+        const returnData = await response.json();
+        alert(returnData.message);
+      } catch (error) {
+        console.error('Errror While Trying Send OTP to Email : ',error);
+        
+      }
+    }
+
   return (
     <>
     <div className='gradient-background'>
@@ -84,6 +100,7 @@ const Login = () => {
 <br/>
 <label className='new-font'>Password : </label>
 <input type='password' placeholder='Password' className="rounded-3xl p-2 bg-white m-3"  onChange={(e) => {setPassword(e.target.value)}}/>
+<a onClick={handleForgotPassword} className='text-blue-500 text-end flex ml-[200px] underline'>Forgot Password !</a>
 <br />
 <br />
 <button className='new-font p-2 rounded-2xl' style={{backgroundColor:'rgba(255, 0, 132, 0.42)',marginLeft:'50%',width:'150px'}}onClick={handleSubmit}>Log In</button>
