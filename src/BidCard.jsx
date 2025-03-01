@@ -97,11 +97,11 @@ const BidCard = ({ Data, budget }) => {
             <div className="flex flex-col items-center space-y-2">
               <div className="bg-white px-2 py-1 rounded-md text-sm">My Bid</div>
               <div className="bg-gradient-to-r from-black to-blue-600 p-3 rounded-lg text-white font-semibold">
-                {bidAmount || "----"}
+                {Math.floor(bidAmount) || "----"}
               </div>
               <div className="bg-white px-2 py-1 rounded-md text-sm">Lowest Bid</div>
               <div className="bg-gradient-to-r from-black to-blue-600 p-3 rounded-lg text-white font-semibold">
-                {lowestBid}
+                {Math.floor(lowestBid)}
               </div>
             </div>
           </div>

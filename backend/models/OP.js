@@ -3,6 +3,10 @@ import express from 'express';
 import { User } from './Users.js';
 import fs from 'fs';
 import { ok } from 'assert';
+import nodemailer  from 'nodemailer';
+import dotenv  from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -21,10 +25,48 @@ const OPSchema = new mongoose.Schema({
         amount: Number,
         timestamp: { type: Date, default: Date.now }
       }
-    ]
+    ],
+    lastBidder:String
 });
 
 const OP = mongoose.model('Servify',OPSchema,'OP');
+
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false, // ✅ Important for port 587 (TLS)
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+    },
+    tls: {
+        rejectUnauthorized: false, // ✅ Prevents SSL/TLS errors
+    }
+});
+
+
+
+
+
+const sendEmailNotification = async (emails, projectTitle) => {
+    console.log("SMTP Config:", process.env.SMTP_HOST, process.env.SMTP_PORT, process.env.SMTP_USER);
+    console.log('Sending Email to Gmails : ',emails);
+    
+    const mailOptions = {
+        from: 'servifysss@gmail.com',
+        to: emails.join(','),
+        subject: `New Project: ${projectTitle}`,
+        text: `A new project matching your skills has been posted: ${projectTitle}. Visit the platform to bid now.`,
+    };
+
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Emails sent successfully.");
+        console.log("SMTP Response:", info.response);
+    } catch (error) {
+        console.error("Error sending email:", error);
+    }
+};
 
 const completedAuctionsFile = "./completedAuctions.json";
 const bidTimers = {}; // Track timers per auction
@@ -74,6 +116,16 @@ router.post('/add-project',async (req,res)=>{
 
     await entry.save();
 
+    try {
+        const matchingUsers = await User.find({ skills: { $in: technical_aspects } });if (matchingUsers.length > 0) {
+            const userEmails = matchingUsers.map(user => user.email);
+            sendEmailNotification(userEmails, title);
+        }
+    } catch (error) {
+        console.error('Email Sending Failed',error);
+        
+    }
+
     return res.status(200).json({message:'Your is Now on Live',ok:true});
    } catch (error) {
     return res.status(513).json({message:'Error While Sasving Project To Database !...',ok:false});
@@ -90,6 +142,22 @@ router.get('/completed-bid',async (req,res)=>{
         console.error('Error While Fetching Completed Auctions : ',e);
         
     }
+});
+
+router.post('/profile-data', async (req,res)=>{
+    const {lastBidder} = req.body;
+
+    try{
+        const response = await OP.find({lastBidder});
+        
+        return res.status(200).json(response);
+    }
+
+    catch(e){
+        console.error(e);
+        
+    }
+    
 });
 
 router.post('/save-auction',async (req,res)=>{

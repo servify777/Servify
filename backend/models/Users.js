@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import nodemailer  from 'nodemailer';
+import dotenv  from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -16,6 +20,44 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('Users',userSchema);
+
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false, // ✅ Important for port 587 (TLS)
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+    },
+    tls: {
+        rejectUnauthorized: false, // ✅ Prevents SSL/TLS errors
+    }
+});
+
+
+const sendEmailNotification = async (email) => {
+    console.log("SMTP Config:", process.env.SMTP_HOST, process.env.SMTP_PORT, process.env.SMTP_USER);
+    console.log('Sending Email to Gmails : ',email);    
+    const OTP = Math.random();
+    const mailOptions = {
+        from:'servifysss@gmail.com',
+        to:email,
+        subject:'Forgot Password For Your Servify Account is Initiated',
+        text:`Here is An OTP To Login Your Servify Account As Of Now : ${OTP}`
+    };
+
+    try {
+        const operation = await transporter.sendMail(mailOptions);
+        return true;
+    } catch (error) {
+        console.error('Error While Sending OTP Mail');
+        return false;
+    }
+};
+
+router.post('/forgot',async (req,res)=>{
+    
+})
 
 router.post('/signin', async (req,res)=>{
     console.log('Sucessfully routed !..');
