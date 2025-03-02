@@ -1,5 +1,5 @@
 import './static/tailwind.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
@@ -11,6 +11,8 @@ const Login = () => {
 
     const [email,setEmail] = useState('');
     const [password,setPassword] = useState('');
+    const [forgot,setForgot] = useState(false);
+    const fpassRef = useRef(null);
 
     const navigate = useNavigate();
 
@@ -74,14 +76,38 @@ const Login = () => {
         const response = await fetch('http://localhost:5000/users/forgot',{
           headers:{'Content-Type':'application/json'},
           method:'POST',
-          body:JSON.stringify(email)
+          body:JSON.stringify({email})
         });
 
         const returnData = await response.json();
         alert(returnData.message);
+        setForgot(true);
       } catch (error) {
         console.error('Errror While Trying Send OTP to Email : ',error);
-        
+      }
+    }
+
+    const handleForgotVerify = async ()=>{
+      const fpass = fpassRef.current.value;
+      try{
+        const response = await fetch('http://localhost:5000/users/verify-otp',{
+          headers:{'Content-Type':'application/json'},
+          method:'POST',
+          body:JSON.stringify({email,otp:fpass})
+        });
+
+        const returnResponse  = await response.json();
+        if(returnResponse.ok){
+          alert(returnResponse.message);
+          navigate('/home');
+        }
+        else{
+          alert(returnResponse.message);
+        }
+      }
+
+      catch(error){
+        console.error('Error While Verifying OTP');
       }
     }
 
@@ -103,7 +129,14 @@ const Login = () => {
 <a onClick={handleForgotPassword} className='text-blue-500 text-end flex ml-[200px] underline'>Forgot Password !</a>
 <br />
 <br />
-<button className='new-font p-2 rounded-2xl' style={{backgroundColor:'rgba(255, 0, 132, 0.42)',marginLeft:'50%',width:'150px'}}onClick={handleSubmit}>Log In</button>
+
+{forgot ? (
+  <section>
+    <label className='new-font'>Enter The OTP From Email : </label>
+    <input ref={fpassRef} type='text' placeholder='OTP From Email' className='rounded-3xl p-2 w-full min-w-full mt-2 mb-3 bg-white '/>
+  </section>
+) : null}
+<button className='new-font p-2 rounded-2xl' style={{backgroundColor:'rgba(255, 0, 132, 0.42)',marginLeft:'50%',width:'150px'}}onClick={forgot ? handleForgotVerify : handleSubmit}>Log In</button>
 <br />
 <br />
 <br />

@@ -7,6 +7,7 @@ import dotenv  from 'dotenv';
 dotenv.config();
 
 const router = express.Router();
+const otpStore = {};
 
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
@@ -35,10 +36,10 @@ const transporter = nodemailer.createTransport({
 });
 
 
-const sendEmailNotification = async (email) => {
+const sendEmailNotification = async (email,OTP) => {
     console.log("SMTP Config:", process.env.SMTP_HOST, process.env.SMTP_PORT, process.env.SMTP_USER);
     console.log('Sending Email to Gmails : ',email);    
-    const OTP = Math.random();
+    
     const mailOptions = {
         from:'servifysss@gmail.com',
         to:email,
@@ -56,8 +57,44 @@ const sendEmailNotification = async (email) => {
 };
 
 router.post('/forgot',async (req,res)=>{
-    
-})
+    const {email} = req.body;
+        try {
+           const matchingUsers = await User.findOne({email});
+           if(!matchingUsers){
+            return res.status(404).json({message:'No User Found On Email Address',ok:true});
+           }
+           const OTP = Math.floor(10000 + Math.random() * 90000); 
+           otpStore[email] = OTP; // ✅ Store OTP in memory
+        console.log(`Generated OTP for ${email}:`, OTP);
+
+        setTimeout(() => {
+            delete otpStore[email]; // ✅ Remove OTP after 5 minutes
+            console.log(`OTP for ${email} expired`);
+        }, 5 * 60 * 1000); // 5 minutes 
+            sendEmailNotification(matchingUsers.email,OTP, 'One Time Password (OTP) for Servify');
+           return res.status(200).json({message:'OTP is sent to Your Email',ok:true});
+       } 
+       catch (error) {
+           console.error('Email Sending Failed',error);
+           return res.status(404).json({message:'Error Sending Email To your Account !...'});
+       }
+});
+
+router.post('/verify-otp', async (req, res) => {
+    const { email, otp } = req.body;
+
+    if (!otpStore[email]) {
+        return res.status(400).json({ message: 'OTP expired or not found' });
+    }
+
+    if (otpStore[email] == otp) {
+        delete otpStore[email]; // ✅ OTP is used, remove it
+        return res.status(200).json({ message: 'OTP verified successfully', ok: true });
+    }
+
+    return res.status(400).json({ message: 'Invalid OTP' });
+});
+
 
 router.post('/signin', async (req,res)=>{
     console.log('Sucessfully routed !..');
