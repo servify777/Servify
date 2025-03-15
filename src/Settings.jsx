@@ -31,7 +31,11 @@ const Settings = () => {
                     <div className="flex flex-col items-center">
                         {/* Profile Image */}
                         <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300">
-                            <img src={userData.image || "/default-avatar.png"} alt="Profile" className="w-full h-full object-cover" />
+                        <img
+                    src={userData.image === '' ? "https://www.bing.com/images/search?q=an%20profile%20avatar%20image&FORM=IQFRBA&id=F0D0517496BAF904480AF91CE4ABCB3C42EDC018" : userData.image  }
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                    />
                         </div>
 
                         {/* Username */}

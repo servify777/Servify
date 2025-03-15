@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import './AddProject.css';
+import { useNavigate } from 'react-router-dom';
 
 const AddProject = () => {
 
@@ -8,6 +9,7 @@ const AddProject = () => {
     const titleRef = useRef(null);
     const descriptionRef = useRef(null);
     const budgetRef = useRef(null);
+    const navigate = useNavigate();
     const ITSkills = [
         "Web Development", "Machine Learning", "Cybersecurity", 
         "Cloud Computing", "Data Science", "Blockchain", 
@@ -31,6 +33,11 @@ const AddProject = () => {
           : [...prev, skill] // Add if not selected
       );
     };
+
+    const getFileNameFromPath = (path) => {
+      return path.split('\\').pop(); // Extracts only the filename
+  };
+  
 
     const handleUpload = async ()=>{
         if(!file){
@@ -58,20 +65,25 @@ const AddProject = () => {
 
     const handleAddition = async (e)=>{
       // Data Derivatio
+      handleUpload();
       const title = titleRef.current.value;
       const description = descriptionRef.current.value;
       const budget = budgetRef.current.value;
-      const url = urlRef.current.value;
+      const url = getFileNameFromPath(urlRef.current.value);
+      console.log('Extracted File Name:', url);
+
+      const client = localStorage.getItem('User')
       try {
         const dataEntry = await fetch('http://localhost:5000/cb/add-project',{
           headers:{'Content-Type':'application/json'},
           method:'POST',
-          body:JSON.stringify({url,title,description,budget,technical_aspects:selectedSkills})
+          body:JSON.stringify({url,title,description,budget,technical_aspects:selectedSkills,client})
         });
 
         const response = await dataEntry.json();
         if(dataEntry.ok){
           alert(response.message);
+          navigate('/');
         }
 
         else{
@@ -92,12 +104,12 @@ const AddProject = () => {
                 <label className='new-font text-xl font-semibold'>Image About Your Project :</label>
                 <section className='w-fit flex'>
             <input ref={urlRef} type="file" accept="image/*" onChange={handleFileChange} />
-            <button 
+            {/* <button 
             type='button'
                 className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700"
                 onClick={handleUpload}>
                 Upload Screenshot
-            </button>
+            </button> */}
             </section>
             </section>
             
@@ -108,7 +120,7 @@ const AddProject = () => {
 
             <section className=' flex m-4'>
                 <label className='new-font text-xl font-semibold '>Project Description </label>
-                <textarea ref={descriptionRef} placeholder=' Project Description' className="w-9/12 rounded-2xl border-2 border-black ml-8 mt-3 p-1 h-32"/>
+                <textarea minLength={250} ref={descriptionRef} placeholder=' Project Description' className="w-9/12 rounded-2xl border-2 border-black ml-8 mt-3 p-1 h-32"/>
             </section>
 
             <section className='m-4'>

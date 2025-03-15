@@ -26,7 +26,8 @@ const OPSchema = new mongoose.Schema({
         timestamp: { type: Date, default: Date.now }
       }
     ],
-    lastBidder:String
+    lastBidder:String,
+    client:{ type: String, required: true }
 });
 
 const OP = mongoose.model('Servify',OPSchema,'OP');
@@ -34,7 +35,7 @@ const OP = mongoose.model('Servify',OPSchema,'OP');
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
-    secure: false, // ✅ Important for port 587 (TLS)
+    secure: false, 
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -67,6 +68,7 @@ const sendEmailNotification = async (emails, projectTitle) => {
         console.error("Error sending email:", error);
     }
 };
+
 
 const completedAuctionsFile = "./completedAuctions.json";
 const bidTimers = {}; // Track timers per auction
@@ -103,7 +105,7 @@ router.post('/search-data', async (req,res)=>{
 
 router.post('/add-project',async (req,res)=>{
    try {
-    const {url,title,description,budget,technical_aspects} = req.body;
+    const {url,title,description,budget,technical_aspects,client} = req.body;
     console.log('Printing : ',url);
     
     const entry = new OP({
@@ -111,7 +113,8 @@ router.post('/add-project',async (req,res)=>{
         title,
         description,
         budget,
-        technical_aspects
+        technical_aspects,
+        client
     });
 
     await entry.save();
@@ -128,6 +131,7 @@ router.post('/add-project',async (req,res)=>{
 
     return res.status(200).json({message:'Your is Now on Live',ok:true});
    } catch (error) {
+    console.error(error);
     return res.status(513).json({message:'Error While Sasving Project To Database !...',ok:false});
    }
 });
@@ -241,6 +245,21 @@ router.post('/place-bid', async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
+
+router.post('/details',async (req,res)=>{
+    const {_id} = req.body;
+
+    try {
+        const search =  await OP.findOne({_id});
+    if(!search){
+        return res.status(404).json({message:'No Data Found For That Auction In Our Database',ok:false});
+    }
+    return res.status(200).json({message:'Data Fetch Sucessfull !..',ok:true,data:search});
+    } catch (error) {
+        console.error('Error While Data Fetch : ',error);
+        
+    }
+})
 
 
 router.use('/auction-data',async (req,res)=>{

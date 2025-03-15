@@ -38,15 +38,17 @@ const PI = () => {
             headers:{'Content-type':'application/json'},
             method:'POST',
             body:JSON.stringify({email,description,url,skill:selectedSkills})
-        })
+        });
+
+        const Data = await response.json();
     
         if(response.ok){
-            alert(response.message);
+            alert(Data.message);
             navigate('/');
         }
     
         else{
-            alert(response.message);
+            alert(Data.message);
         }
     }
 

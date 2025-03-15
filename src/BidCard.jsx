@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
+import { motion } from "framer-motion";
 
 const socket = io("http://localhost:5000");
 
 const BidCard = ({ Data, budget }) => {
+  const validBudget = budget ? parseFloat(budget) : 0;
+  console.log('Data For BidCard : ',Data);
+  
+  const [lowestBid, setLowestBid] = useState(Data.lowestBid || validBudget);
   const [bidAmount, setBidAmount] = useState(0);
-  const [lowestBid, setLowestBid] = useState(Data.lowestBid || budget);
   const [lastBidder, setLastBidder] = useState(null);
-  const [finishedProjects,setFinishedProjects] = useState(null);
-  const [isCompleted,setIsCompleted] = useState(Data.isCompleted);
 
   useEffect(() => {
   
@@ -77,7 +79,8 @@ const BidCard = ({ Data, budget }) => {
   };
 
   return (
-    <div className="w-96 bg-gray-500 rounded-lg p-4 shadow-md">
+    <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{duration:0.8}} className="w-96 bg-gray-500 rounded-lg p-4 shadow-md"
+    >
       {lastBidder ? (
         <p className="text-white text-lg font-semibold text-center italic">
           Last Bid: {lastBidder}
@@ -116,7 +119,7 @@ const BidCard = ({ Data, budget }) => {
           </div>
         </>
       )}
-    </div>
+    </motion.div>
   );
   
 };

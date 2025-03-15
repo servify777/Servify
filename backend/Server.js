@@ -11,18 +11,35 @@ import fs from 'fs';
 import { Server } from "socket.io";
 import http from "http";
 import bidRoutes from './Routes/bidRoutes.js';
-
+import { fileURLToPath } from 'url';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
 const completedAuctionsFile = "./completedAuctions.json";
 const projectprofiles = "./project-profile";
 const bidTimers = {}; // Track timers per auction
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
+const profileDir = path.join(__dirname, 'backend', 'project-profile');
+if (!fs.existsSync(profileDir)) {
+    fs.mkdirSync(profileDir, { recursive: true });
+}
 
+console.log("Static Path:", path.join(__dirname, 'project-profile'));
 
+app.use('/project-profile', express.static(path.join(__dirname, 'project-profile')));
+app.use('/carousal',express.static(path.join(__dirname,'Carousal')));                   
 
+const imagePath = path.join(__dirname, 'project-profile');
 
 
 if(!fs.existsSync(completedAuctionsFile)){
@@ -40,22 +57,19 @@ mongoose.connect('mongodb://localhost:27017/Servify', {
     console.error('Error While Connecting to Database:', err);
 });
 
-// Setting up multer for file uploads
 const storage = multer.diskStorage({
-    destination: function (req, res, cb) {
-        cb(null, "uploads/");
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + path.extname(file.originalname));
+    destination: './uploads/', 
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + '-' + file.originalname);
     }
-});
+  });
 
 const profileStorage = multer.diskStorage({
     destination : function(req,res,cb){
         cb(null,"project-profile/");
     },
     filename: function(req,file,cb){
-        cb(null,Date.now() + path.extname(file.originalname));
+        cb(null,file.originalname);
     }
 });
 
@@ -77,6 +91,17 @@ app.post("/reset-bids", async (req, res) => {
     }
 });
 
+app.post("/image",async (req,res)=>{
+    const {url} = req.body;
+    try {
+        const imageurl = imagePath+url;
+        console.log('Requested Image : ',imageurl);
+        return res.status(200).json({path:imageurl})
+    } catch (error) {
+        console.error(error);
+        
+    }
+})
 // Socket.io functionality for real-time updates
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -85,6 +110,26 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
 });
+
+app.get('/api/images', (req, res) => {
+    console.log('Getting Images for Carousal');
+    
+    const carousalPath = path.join(__dirname, 'Carousal');
+    try {
+        fs.readdir(carousalPath, (err, files) => {
+            if (err) {
+                return res.status(500).json({ error: 'Failed to read folder' });
+            }
+            const imageUrls = files.map(file => `${file}`);
+            const path = imageUrls;
+            console.log('Image URLs for Carousal : ',path);
+            return res.json({images:path});
+        });
+    } catch (error) {
+console.error(error);
+    }
+});
+
 
 
 io.on("connection", (socket) => {
@@ -162,7 +207,7 @@ app.post('/upload-projectimg', profileUpload.single('Profile'), (req, res) => {
 app.use('/users', userRoutes);
 
 // Query routes
-app.use('/query', router);
+app.use('/query', router);    
 
 // Start server with correct listener
 server.listen(5000, () => console.log('Server is Running on port 5000'));

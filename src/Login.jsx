@@ -49,10 +49,10 @@ const Login = () => {
         if(data.ok){
           localStorage.setItem('token',data.token);
           console.log('Login Sucessfull and the token is : ',data.token);
-            // alert('LOG IN Successfull !...');
             console.log('token from server' ,data.token);
             localStorage.setItem('token',data.token);
             localStorage.setItem('Account-Type',data.AccountType);
+            localStorage.setItem('User',data.User);
             const salt = await bcrypt.genSalt(10);
             const usercredential = await bcrypt.hash(email,salt);
             localStorage.setItem('credentials',usercredential);
@@ -99,7 +99,7 @@ const Login = () => {
         const returnResponse  = await response.json();
         if(returnResponse.ok){
           alert(returnResponse.message);
-          navigate('/home');
+          navigate('/');
         }
         else{
           alert(returnResponse.message);

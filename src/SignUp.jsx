@@ -1,7 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import EmailVerify from './EmailVerify';
 
 function SignUp() {
+  const [isVerify,setVerify] = useState(false);
   const usernameRef = useRef(null);
   const emailRef = useRef(null);
   const phoneRef = useRef(null);
@@ -10,11 +12,6 @@ function SignUp() {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   if (token) navigate('/');
-  // }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const username = usernameRef.current.value;
@@ -22,7 +19,6 @@ function SignUp() {
     const phone = phoneRef.current.value;
     const password = passwordRef.current.value;
     const type = typeRef.current.value;
-
     try {
       const response = await fetch('http://localhost:5000/users/signin', {
         method: 'POST',
@@ -35,8 +31,10 @@ function SignUp() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('email',email);
         localStorage.setItem('Account-Type',type);
+        localStorage.setItem('User',username);
+        setVerify(true);
         alert('Sign Up Successful!');
-        navigate('/');
+        
       } else {
         alert(data.message);
       }
@@ -48,7 +46,14 @@ function SignUp() {
   return (
     <div className="w-full gradient-background flex justify-center items-center min-h-screen bg-gray-100">
       <div className="transparent-card">
-        <h1 className="text-center text-2xl font-bold mb-4">Sign Up</h1>
+        {
+          isVerify ? (
+            <>
+              <EmailVerify email={emailRef.current.value} phone={phoneRef.current.value}/>
+            </>
+          ) : (
+            <>
+            <h1 className="text-center text-2xl font-bold mb-4">Sign Up</h1>
 
         <form onSubmit={handleSubmit} className="grid gap-3">
           {/* First Row: Username & Email */}
@@ -77,6 +82,9 @@ function SignUp() {
         <p className="mt-3 text-center new-font">
           Already have an account? <a href="/login" className="text-purple-600 new-font">Log In</a>
         </p>
+            </>
+          )
+        }
       </div>
     </div>
   );

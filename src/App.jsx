@@ -15,6 +15,7 @@ import Search from './Search';
 import AddProject from './AddProject';
 import './static/input.css';
 import YourProjects from './YourProjects';
+import Details from './Details';
 
 function App() {
 
@@ -33,7 +34,9 @@ function App() {
           <Route path='/search/:searchterm' element={<><Offer /><Navbar /><Search /><About /></>} />
           <Route path='/add' element={<><Offer /> <Navbar /> <AddProject /> <About /></>} />
           <Route path='/projects' element={<><Offer /> <Navbar /> <YourProjects /> <About /></> } />
+          <Route path='/details/:_id' element={<><Offer /><Navbar /><Details /><About /></>} />
         </Routes>
+        
       </Router>
     </>
   )
