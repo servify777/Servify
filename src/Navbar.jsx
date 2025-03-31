@@ -137,7 +137,7 @@ const Navbar = () => {
             />
             <button style={styles.searchButton} className="rounded-2xl" onClick={handleRedirect}>
               Search
-            </button>     
+              </button>     
 
           </div>
         </div>
@@ -145,11 +145,11 @@ const Navbar = () => {
         <div className="relative">
           <FontAwesomeIcon icon={faUser} className="space" size={55} strokeWidth={3} onClick={()=>setIsDropdownOpen(!isDropdownOpen)}/>
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 py-2 w-40 bg-gradient-to-r from-blue-500 to-purple-600 text-gray-600 rounded-lg shadow-xl">
-                  <button className="new-font block px-4 py-2 text-center hover:text-white" onClick={()=>{navigate('/settings')}}>Settings</button>
-                  <button className="new-font block px-4 py-2 text-center hover:text-white" onClick={()=> navigate('/help')}>Help</button>
-                  <button className="new-font block px-4 py-2 text-center hover:text-white" onClick={()=>{navigate('/about')}}>About Us</button>
-                  {Account_Type === 'client' ? <button className="new-font block px-4 py-2 text-center hover:text-white text-sm" onClick={()=>{navigate('/add')}}>Add Your Project</button> : null}
+              <div className="absolute right-0 mt-2 py-2 w-40 text-gray-500 rounded-lg shadow-xl" style={{background:'rgba(255,255,255,0.5)'}}>
+                  <button className="new-font block px-4 py-2 text-center hover:text-black" onClick={()=>{navigate('/settings')}}>Settings</button>
+                  <button className="new-font block px-4 py-2 text-center hover:text-black" onClick={()=> navigate('/help')}>Help</button>
+                  <button className="new-font block px-4 py-2 text-center hover:text-black" onClick={()=>{navigate('/about')}}>About Us</button>
+                  {Account_Type === 'client' ? <button className="new-font block px-4 py-2 text-center hover:text-black text-sm" onClick={()=>{navigate('/add')}}>Add Your Project</button> : null}
                   </div>
             )}
           </div>
