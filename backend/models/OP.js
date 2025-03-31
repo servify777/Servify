@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import express from 'express';
 import { User } from './Users.js';
 import fs from 'fs';
-import { ok } from 'assert';
 import nodemailer  from 'nodemailer';
 import dotenv  from 'dotenv';
 

@@ -3,10 +3,8 @@ import express from 'express';
 import bcrypt from 'bcryptjs';
 import nodemailer  from 'nodemailer';
 import dotenv  from 'dotenv';
-import pkg from 'twilio';
 import fast2sms from "fast-two-sms";
 import fetch from 'node-fetch';
-const twilio = pkg;
 
 
 dotenv.config();
@@ -15,7 +13,6 @@ const router = express.Router();
 const otpStore = {};
 const emailOTPStore = {};
 const messageOTP = {}
-const client = twilio(process.env.TWILIO_ACCOUNT_SID,process.env.TWILIO_AUTH_TOKEN);
 const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true },

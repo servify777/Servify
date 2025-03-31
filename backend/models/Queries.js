@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import express from "express";
-import { log } from "console";
 
 const router = express.Router();
 
